@@ -1,8 +1,20 @@
-export default function ReferenceDateSelector() {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const day = today.getDate();
+import type { DateValue } from "@/types/date";
+
+interface ReferenceDateSelectorProps {
+  referenceDate: DateValue;
+  setReferenceDate: (date: DateValue) => void;
+}
+
+export default function ReferenceDateSelector({
+  referenceDate,
+  setReferenceDate,
+}: ReferenceDateSelectorProps) {
+  const { year, month, day } = referenceDate;
+
+  //   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     const { name, value } = e.target;
+  //     setReferenceDate({ ...referenceDate, [name]: value });
+  //   };
 
   return (
     <section className="">

@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Button from "@/components/common/button";
 import Input from "@/components/common/input";
+import type { DateValue } from "@/types/date";
 
-export default function BirthForm() {
-  const [year, setYear] = useState<number | null>(null);
-  const [month, setMonth] = useState<number | null>(null);
-  const [day, setDay] = useState<number | null>(null);
+interface BirthFormProps {
+  birthDate: DateValue;
+  setBirthDate: (date: DateValue) => void;
+}
+
+export default function BirthForm({ birthDate, setBirthDate }: BirthFormProps) {
+  const { year, month, day } = birthDate;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert(`${year}년 ${month}월 ${day}일`);
+    setBirthDate({ year, month, day });
   };
 
   return (
@@ -24,7 +28,10 @@ export default function BirthForm() {
             placeholder="2000"
             value={year ?? ""}
             onChange={(e) =>
-              setYear(e.target.value === "" ? null : Number(e.target.value))
+              setBirthDate({
+                ...birthDate,
+                year: e.target.value === "" ? null : Number(e.target.value),
+              })
             }
             size={4}
             required
@@ -38,7 +45,10 @@ export default function BirthForm() {
             placeholder="1"
             value={month ?? ""}
             onChange={(e) =>
-              setMonth(e.target.value === "" ? null : Number(e.target.value))
+              setBirthDate({
+                ...birthDate,
+                month: e.target.value === "" ? null : Number(e.target.value),
+              })
             }
             size={2}
             max={12}
@@ -53,7 +63,10 @@ export default function BirthForm() {
             placeholder="1"
             value={day ?? ""}
             onChange={(e) =>
-              setDay(e.target.value === "" ? null : Number(e.target.value))
+              setBirthDate({
+                ...birthDate,
+                day: e.target.value === "" ? null : Number(e.target.value),
+              })
             }
             size={2}
             max={31}
@@ -67,9 +80,7 @@ export default function BirthForm() {
         <Button
           variant="secondary"
           onClick={() => {
-            setYear(null);
-            setMonth(null);
-            setDay(null);
+            setBirthDate({ ...birthDate, year: null, month: null, day: null });
           }}
         >
           초기화

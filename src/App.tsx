@@ -1,4 +1,4 @@
-import Header from "@/components/header";
+import Header from "@/components/common/header";
 import MainContainer from "@/components/main-container";
 
 export default function App() {

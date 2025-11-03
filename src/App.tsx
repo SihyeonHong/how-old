@@ -1,5 +1,10 @@
-function App() {
-  return <h1>hello world</h1>;
-}
+import Button from "@/components/button";
 
-export default App;
+export default function App() {
+  return (
+    <div>
+      Hello World!
+      <Button onClick={() => alert("clicked")}>Click me</Button>
+    </div>
+  );
+}

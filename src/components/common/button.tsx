@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes } from "react";
 import { cn } from "@/utils/classname";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "outline";
 }
 
 export default function Button({
@@ -29,4 +29,6 @@ export default function Button({
 const variants = {
   primary: "bg-stone-800 hover:bg-stone-900 text-white ",
   secondary: "bg-stone-200 text-stone-800 hover:bg-stone-300",
+  outline:
+    "border border-stone-800 bg-transparent text-stone-800 hover:bg-stone-50",
 };

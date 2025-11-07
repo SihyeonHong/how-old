@@ -1,25 +1,20 @@
 import type { DateValue } from "@/types/date";
-import { AgeCalculator } from "@/utils/calculator";
 
 interface ResultSectionProps {
-  birthDate: DateValue;
-  referenceDate: DateValue;
+  ageResult: DateValue | null;
 }
 
-export default function ResultSection({
-  birthDate,
-  referenceDate,
-}: ResultSectionProps) {
-  const age = AgeCalculator(referenceDate, birthDate);
-
-  if (age === null) {
-    return null;
-  }
-
+export default function ResultSection({ ageResult }: ResultSectionProps) {
   return (
     <section className="rounded-sm bg-stone-100 p-4">
-      <h1 className="text-xl font-semibold">만 나이</h1>
-      <p>{age}</p>
+      <h1 className="text-xl font-semibold">몇 살이지?</h1>
+      {ageResult ? (
+        <p>
+          만 {ageResult.year}세 {ageResult.month}개월 {ageResult.day}일
+        </p>
+      ) : (
+        <p>날짜를 입력하면 나이가 표시됩니다.</p>
+      )}
     </section>
   );
 }

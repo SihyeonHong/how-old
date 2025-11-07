@@ -1,5 +1,5 @@
 export interface DateValue {
-  year: number | null;
-  month: number | null;
-  day: number | null;
+  year: number;
+  month: number; // 없을 때 0으로 처리
+  day: number; // 없을 때 0으로 처리
 }

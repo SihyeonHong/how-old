@@ -5,12 +5,12 @@ import type { DateValue } from "@/types/date";
  * year는 필수이며, month와 day는 선택적입니다.
  * @param referenceDate 기준 날짜
  * @param birthDate 생년월일
- * @returns 만 나이 계산 결과 문자열. year가 없으면 null 반환
+ * @returns 만 나이 계산 결과 객체 { year, month, day }. year가 없으면 null 반환
  */
 export function AgeCalculator(
   referenceDate: DateValue,
   birthDate: DateValue,
-): string | null {
+): DateValue | null {
   // year는 필수이므로 둘 중 하나라도 없으면 early return
   if (referenceDate.year === null || birthDate.year === null) {
     return null;
@@ -64,16 +64,11 @@ export function AgeCalculator(
       return null;
     }
 
-    // 결과 문자열 생성
-    const yearText = years > 0 ? `${years}년 ` : "";
-    const monthText = months > 0 ? `${months}월 ` : "";
-    const dayText = days > 0 ? `${days}일 ` : "";
-
-    if (yearText || monthText || dayText) {
-      return `태어난 지 만으로 ${yearText}${monthText}${dayText}지났다`.trim();
-    }
-
-    return "태어난 지 만으로 0일 지났다";
+    return {
+      year: years,
+      month: months,
+      day: days,
+    };
   }
 
   // month나 day가 없는 경우 연도만으로 계산
@@ -83,5 +78,9 @@ export function AgeCalculator(
     return null;
   }
 
-  return `태어난 지 만으로 ${age}년 지났다`;
+  return {
+    year: age,
+    month: 0,
+    day: 0,
+  };
 }

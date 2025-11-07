@@ -1,10 +1,11 @@
-import Button from "@/components/button";
+import Header from "@/components/common/header";
+import MainContainer from "@/components/main-container";
 
 export default function App() {
   return (
-    <div>
-      Hello World!
-      <Button onClick={() => alert("clicked")}>Click me</Button>
+    <div className="space-y-2">
+      <Header />
+      <MainContainer />
     </div>
   );
 }

@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Input from "@/components/common/input";
-
-import Badge from "./common/badge";
+import { cn } from "@/utils/classname";
 
 interface DateStringValue {
   year: string;
@@ -19,6 +18,25 @@ export default function ReferenceDateForm({
   referenceDate,
   setReferenceDate,
 }: ReferenceDateFormProps) {
+  const [useToday, setUseToday] = useState(true);
+
+  // 오늘 날짜를 가져오는 함수
+  const getTodayDate = (): DateStringValue => {
+    const today = new Date();
+    return {
+      year: today.getFullYear().toString(),
+      month: (today.getMonth() + 1).toString(),
+      day: today.getDate().toString(),
+    };
+  };
+
+  // 체크박스가 체크되면 오늘 날짜로 설정
+  useEffect(() => {
+    if (useToday) {
+      setReferenceDate(getTodayDate());
+    }
+  }, [useToday, setReferenceDate]);
+
   const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setReferenceDate({ ...referenceDate, year: e.target.value });
   };
@@ -31,18 +49,10 @@ export default function ReferenceDateForm({
     setReferenceDate({ ...referenceDate, day: e.target.value });
   };
 
-  // 오늘 날짜와 비교하는 함수
-  const isToday = (): boolean => {
-    const today = new Date();
-    const todayYear = today.getFullYear().toString();
-    const todayMonth = (today.getMonth() + 1).toString();
-    const todayDay = today.getDate().toString();
-
-    return (
-      referenceDate.year === todayYear &&
-      referenceDate.month === todayMonth &&
-      referenceDate.day === todayDay
-    );
+  const handleTodayCheckboxChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setUseToday(e.target.checked);
   };
 
   return (
@@ -61,6 +71,7 @@ export default function ReferenceDateForm({
               onChange={handleYearChange}
               size={4}
               required
+              disabled={useToday}
             />
             <span>년</span>
           </label>
@@ -74,6 +85,7 @@ export default function ReferenceDateForm({
               size={2}
               max={12}
               min={1}
+              disabled={useToday}
             />
             <span>월</span>
           </label>
@@ -87,10 +99,21 @@ export default function ReferenceDateForm({
               size={2}
               max={31}
               min={1}
+              disabled={useToday}
             />
             <span>일</span>
           </label>
-          {isToday() && <Badge variant="accent">오늘</Badge>}
+          <label className="mt-1 ml-1 flex cursor-pointer items-center gap-1 hover:font-semibold">
+            <input
+              type="checkbox"
+              checked={useToday}
+              onChange={handleTodayCheckboxChange}
+              className="h-4 w-4 cursor-pointer"
+            />
+            <span className={cn("mb-0.5", useToday ? "font-semibold" : "")}>
+              오늘
+            </span>
+          </label>
         </div>
       </div>
     </form>

@@ -4,7 +4,7 @@ import BirthForm from "@/components/birth-form";
 import ReferenceDateForm from "@/components/reference-date-form";
 import ResultSection from "@/components/result-section";
 import type { DateValue } from "@/types/date";
-import { AgeCalculator } from "@/utils/calculator";
+import ageCalculator from "@/utils/calculators/age-calculator";
 
 interface DateStringValue {
   year: string;
@@ -47,7 +47,7 @@ export default function MainContainer() {
       return null;
     }
 
-    return AgeCalculator(refDateValue, birthDateValue);
+    return ageCalculator(refDateValue, birthDateValue);
   }, [referenceDate, birthDate]);
 
   return (

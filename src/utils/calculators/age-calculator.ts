@@ -7,7 +7,7 @@ import type { DateValue } from "@/types/date";
  * @param birthDate 생년월일
  * @returns 만 나이 계산 결과 객체 { year, month, day }. year가 없으면 null 반환
  */
-export function AgeCalculator(
+export default function ageCalculator(
   referenceDate: DateValue,
   birthDate: DateValue,
 ): DateValue | null {

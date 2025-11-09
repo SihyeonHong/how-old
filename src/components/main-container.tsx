@@ -4,7 +4,8 @@ import BirthForm from "@/components/birth-form";
 import ReferenceDateForm from "@/components/reference-date-form";
 import ResultSection from "@/components/result-section";
 import type { DateValue } from "@/types/date";
-import { AgeCalculator } from "@/utils/calculator";
+import ageCalculator from "@/utils/calculators/age-calculator";
+import kAgeCalculator from "@/utils/calculators/k-age-calculator";
 
 interface DateStringValue {
   year: string;
@@ -47,7 +48,24 @@ export default function MainContainer() {
       return null;
     }
 
-    return AgeCalculator(refDateValue, birthDateValue);
+    return ageCalculator(refDateValue, birthDateValue);
+  }, [referenceDate, birthDate]);
+
+  // 두 날짜에 모두 year가 존재할 때만 한국 나이 계산
+  const kAgeResult = useMemo(() => {
+    const refDateValue = stringToDateValue(referenceDate);
+    const birthDateValue = stringToDateValue(birthDate);
+
+    if (!refDateValue || !birthDateValue) {
+      return null;
+    }
+
+    // year가 존재하는지 확인
+    if (refDateValue.year > 0 && birthDateValue.year > 0) {
+      return kAgeCalculator(refDateValue, birthDateValue, false);
+    }
+
+    return null;
   }, [referenceDate, birthDate]);
 
   return (
@@ -57,7 +75,7 @@ export default function MainContainer() {
         referenceDate={referenceDate}
         setReferenceDate={setReferenceDate}
       />
-      <ResultSection ageResult={ageResult} />
+      <ResultSection ageResult={ageResult} kAgeResult={kAgeResult} />
     </main>
   );
 }

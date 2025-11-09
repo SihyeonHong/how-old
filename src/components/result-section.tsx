@@ -1,12 +1,15 @@
 import { NavArrowDown, Xmark } from "iconoir-react";
 import { useState } from "react";
 
-import Badge from "@/components/common/badge";
+import Chip from "@/components/common/chip";
 import type { DateValue } from "@/types/date";
+import { cn } from "@/utils/classname";
 
 interface ResultSectionProps {
   ageResult: DateValue | null;
   kAgeResult: number | null;
+  applyQuick: boolean;
+  onApplyQuickChange: (value: boolean) => void;
 }
 
 interface AgeRow {
@@ -19,6 +22,8 @@ interface AgeRow {
 export default function ResultSection({
   ageResult,
   kAgeResult,
+  applyQuick,
+  onApplyQuickChange,
 }: ResultSectionProps) {
   const [visibleStates, setVisibleStates] = useState<Record<string, boolean>>({
     "man-age": true,
@@ -50,7 +55,7 @@ export default function ResultSection({
     {
       id: "korean-age",
       label: "한국 나이",
-      value: kAgeResult !== null ? `${kAgeResult}세` : "",
+      value: kAgeResult !== null ? `${kAgeResult}세 ` : "",
       isVisible: kAgeResult !== null,
     },
   ];
@@ -92,11 +97,31 @@ export default function ResultSection({
                   >
                     {row.label}
                   </td>
-                  <td
-                    className="px-4 py-2 wrap-break-word"
-                    style={{ width: "auto" }}
-                  >
-                    {row.value}
+                  <td className="w-auto px-4 py-2 wrap-break-word">
+                    <div className="flex items-center gap-2">
+                      <span>{row.value}</span>
+                      {row.id === "korean-age" && (
+                        <label className="flex cursor-pointer items-center gap-1 hover:[&>span]:text-stone-900">
+                          <input
+                            type="checkbox"
+                            checked={applyQuick}
+                            onChange={(e) =>
+                              onApplyQuickChange(e.target.checked)
+                            }
+                            className="h-4 w-4 cursor-pointer"
+                            aria-label="빠른년생"
+                          />
+                          <span
+                            className={cn(
+                              "text-sm whitespace-nowrap text-stone-400",
+                              applyQuick ? "text-stone-900" : "",
+                            )}
+                          >
+                            빠른년생
+                          </span>
+                        </label>
+                      )}
+                    </div>
                   </td>
                   <td
                     className="px-1 text-center whitespace-nowrap"
@@ -139,14 +164,14 @@ export default function ResultSection({
         {isHiddenItemsExpanded && hiddenRows.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
             {hiddenRows.map((row) => (
-              <Badge
+              <Chip
                 key={row.id}
                 variant="primary"
                 className="cursor-pointer hover:opacity-80"
                 onClick={() => handleShow(row.id)}
               >
                 {row.label}
-              </Badge>
+              </Chip>
             ))}
           </div>
         )}

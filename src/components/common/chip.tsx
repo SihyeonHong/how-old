@@ -3,12 +3,12 @@ import type { ReactNode } from "react";
 
 import { cn } from "@/utils/classname";
 
-export default function Badge({
+export default function Chip({
   children,
   className,
   variant = "primary",
   ...rest
-}: BadgeProps) {
+}: ChipProps) {
   return (
     <span
       className={cn(
@@ -23,7 +23,7 @@ export default function Badge({
   );
 }
 
-interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+interface ChipProps extends HTMLAttributes<HTMLSpanElement> {
   children: ReactNode;
   className?: string;
   variant?: "primary" | "secondary" | "accent";

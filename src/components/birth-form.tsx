@@ -31,41 +31,41 @@ export default function BirthForm({ birthDate, setBirthDate }: BirthFormProps) {
       <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
         <h1 className="text-xl font-semibold">생년월일</h1>
         <div className="flex items-center gap-2">
-          <label className="flex items-center gap-1">
+          <label htmlFor="birth-year" className="flex items-center gap-1">
             <Input
-              id="year"
+              id="birth-year"
               type="number"
-              placeholder="2000"
               value={birthDate.year}
               onChange={handleYearChange}
               size={4}
               required
+              aria-label="생년월일 연도"
             />
             <span>년</span>
           </label>
-          <label className="flex items-center gap-1">
+          <label htmlFor="birth-month" className="flex items-center gap-1">
             <Input
-              id="month"
+              id="birth-month"
               type="number"
-              placeholder="1"
               value={birthDate.month}
               onChange={handleMonthChange}
               size={2}
               max={12}
               min={1}
+              aria-label="생년월일 월"
             />
             <span>월</span>
           </label>
-          <label className="flex items-center gap-1">
+          <label htmlFor="birth-day" className="flex items-center gap-1">
             <Input
-              id="day"
+              id="birth-day"
               type="number"
-              placeholder="1"
               value={birthDate.day}
               onChange={handleDayChange}
               size={2}
               max={31}
               min={1}
+              aria-label="생년월일 일"
             />
             <span>일</span>
           </label>

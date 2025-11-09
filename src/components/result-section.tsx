@@ -13,16 +13,16 @@ interface AgeRow {
   label: string;
   value: string;
   isVisible: boolean;
-  showState: boolean;
-  onHide: () => void;
 }
 
 export default function ResultSection({
   ageResult,
   kAgeResult,
 }: ResultSectionProps) {
-  const [showManAge, setShowManAge] = useState(true);
-  const [showKoreanAge, setShowKoreanAge] = useState(true);
+  const [visibleStates, setVisibleStates] = useState<Record<string, boolean>>({
+    "man-age": true,
+    "korean-age": true,
+  });
 
   const formatManAge = (result: DateValue): string => {
     const parts: string[] = [];
@@ -44,20 +44,25 @@ export default function ResultSection({
       label: "만 나이",
       value: ageResult ? formatManAge(ageResult) : "",
       isVisible: ageResult !== null,
-      showState: showManAge,
-      onHide: () => setShowManAge(false),
     },
     {
       id: "korean-age",
       label: "한국 나이",
       value: kAgeResult !== null ? `${kAgeResult}세` : "",
       isVisible: kAgeResult !== null,
-      showState: showKoreanAge,
-      onHide: () => setShowKoreanAge(false),
     },
   ];
 
-  const visibleRows = rows.filter((row) => row.isVisible && row.showState);
+  const handleHide = (id: string) => {
+    setVisibleStates((prev) => ({
+      ...prev,
+      [id]: false,
+    }));
+  };
+
+  const visibleRows = rows.filter(
+    (row) => row.isVisible && visibleStates[row.id] !== false,
+  );
 
   return (
     <section className="rounded-sm bg-stone-100 p-4">
@@ -84,7 +89,7 @@ export default function ResultSection({
                   style={{ width: "1%" }}
                 >
                   <button
-                    onClick={row.onHide}
+                    onClick={() => handleHide(row.id)}
                     className="text-red-700 hover:text-red-800"
                     aria-label={`${row.label} 숨기기`}
                   >

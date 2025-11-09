@@ -59,50 +59,55 @@ export default function ReferenceDateForm({
     <form className="space-y-2">
       <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
         <div className="flex items-center gap-2">
-          <h1 className="text-xl font-semibold">기준일</h1>
+          <h1 className="mr-4 text-xl font-semibold">기준일</h1>
         </div>
-        <div className="flex items-center gap-2">
-          <label className="flex items-center gap-1">
-            <Input
-              id="year"
-              type="number"
-              placeholder="2000"
-              value={referenceDate.year}
-              onChange={handleYearChange}
-              size={4}
-              required
-              disabled={useToday}
-            />
-            <span>년</span>
-          </label>
-          <label className="flex items-center gap-1">
-            <Input
-              id="month"
-              type="number"
-              placeholder="1"
-              value={referenceDate.month}
-              onChange={handleMonthChange}
-              size={2}
-              max={12}
-              min={1}
-              disabled={useToday}
-            />
-            <span>월</span>
-          </label>
-          <label className="flex items-center gap-1">
-            <Input
-              id="day"
-              type="number"
-              placeholder="1"
-              value={referenceDate.day}
-              onChange={handleDayChange}
-              size={2}
-              max={31}
-              min={1}
-              disabled={useToday}
-            />
-            <span>일</span>
-          </label>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2">
+            <label htmlFor="reference-year" className="flex items-center gap-1">
+              <Input
+                id="reference-year"
+                type="number"
+                value={referenceDate.year}
+                onChange={handleYearChange}
+                size={4}
+                required
+                disabled={useToday}
+                aria-label="기준 연도"
+              />
+              <span>년</span>
+            </label>
+            <label
+              htmlFor="reference-month"
+              className="flex items-center gap-1"
+            >
+              <Input
+                id="reference-month"
+                type="number"
+                value={referenceDate.month}
+                onChange={handleMonthChange}
+                size={2}
+                max={12}
+                min={1}
+                disabled={useToday}
+                aria-label="기준 월"
+              />
+              <span>월</span>
+            </label>
+            <label htmlFor="reference-day" className="flex items-center gap-1">
+              <Input
+                id="reference-day"
+                type="number"
+                value={referenceDate.day}
+                onChange={handleDayChange}
+                size={2}
+                max={31}
+                min={1}
+                disabled={useToday}
+                aria-label="기준 일"
+              />
+              <span>일</span>
+            </label>
+          </div>
           <label className="mt-1 ml-1 flex cursor-pointer items-center gap-1 hover:font-semibold">
             <input
               type="checkbox"
@@ -110,7 +115,12 @@ export default function ReferenceDateForm({
               onChange={handleTodayCheckboxChange}
               className="h-4 w-4 cursor-pointer"
             />
-            <span className={cn("mb-0.5", useToday ? "font-semibold" : "")}>
+            <span
+              className={cn(
+                "mb-0.5 whitespace-nowrap",
+                useToday ? "font-semibold" : "",
+              )}
+            >
               오늘
             </span>
           </label>

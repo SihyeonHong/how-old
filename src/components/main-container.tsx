@@ -25,6 +25,7 @@ export default function MainContainer() {
     month: "",
     day: "",
   });
+  const [applyQuick, setApplyQuick] = useState(false);
 
   // string을 DateValue로 변환하는 헬퍼 함수
   const stringToDateValue = (dateStr: DateStringValue): DateValue | null => {
@@ -62,11 +63,11 @@ export default function MainContainer() {
 
     // year가 존재하는지 확인
     if (refDateValue.year > 0 && birthDateValue.year > 0) {
-      return kAgeCalculator(refDateValue, birthDateValue, false);
+      return kAgeCalculator(refDateValue, birthDateValue, applyQuick);
     }
 
     return null;
-  }, [referenceDate, birthDate]);
+  }, [referenceDate, birthDate, applyQuick]);
 
   return (
     <main className="mx-auto w-full max-w-lg space-y-4 bg-white p-8 sm:rounded-sm sm:shadow-md">
@@ -75,7 +76,12 @@ export default function MainContainer() {
         referenceDate={referenceDate}
         setReferenceDate={setReferenceDate}
       />
-      <ResultSection ageResult={ageResult} kAgeResult={kAgeResult} />
+      <ResultSection
+        ageResult={ageResult}
+        kAgeResult={kAgeResult}
+        applyQuick={applyQuick}
+        onApplyQuickChange={setApplyQuick}
+      />
     </main>
   );
 }

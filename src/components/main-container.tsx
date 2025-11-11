@@ -27,6 +27,15 @@ export default function MainContainer() {
   });
   const [applyQuick, setApplyQuick] = useState(false);
 
+  // birthDate를 업데이트하는 함수 (month가 비면 빠른년생 체크 해제)
+  const handleBirthDateChange = (date: DateStringValue) => {
+    setBirthDate(date);
+    // month가 비면 빠른년생 체크 해제
+    if (!date.month || date.month.trim() === "") {
+      setApplyQuick(false);
+    }
+  };
+
   // string을 DateValue로 변환하는 헬퍼 함수
   const stringToDateValue = (dateStr: DateStringValue): DateValue | null => {
     const year = Number(dateStr.year);
@@ -71,7 +80,7 @@ export default function MainContainer() {
 
   return (
     <main className="mx-auto w-full max-w-lg space-y-4 bg-white p-8 sm:rounded-sm sm:shadow-md">
-      <BirthForm birthDate={birthDate} setBirthDate={setBirthDate} />
+      <BirthForm birthDate={birthDate} setBirthDate={handleBirthDateChange} />
       <ReferenceDateForm
         referenceDate={referenceDate}
         setReferenceDate={setReferenceDate}
@@ -81,6 +90,7 @@ export default function MainContainer() {
         kAgeResult={kAgeResult}
         applyQuick={applyQuick}
         onApplyQuickChange={setApplyQuick}
+        isQuickDisabled={!birthDate.month || birthDate.month.trim() === ""}
       />
     </main>
   );

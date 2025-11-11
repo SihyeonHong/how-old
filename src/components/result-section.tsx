@@ -10,6 +10,7 @@ interface ResultSectionProps {
   kAgeResult: number | null;
   applyQuick: boolean;
   onApplyQuickChange: (value: boolean) => void;
+  isQuickDisabled?: boolean;
 }
 
 interface AgeRow {
@@ -24,6 +25,7 @@ export default function ResultSection({
   kAgeResult,
   applyQuick,
   onApplyQuickChange,
+  isQuickDisabled = false,
 }: ResultSectionProps) {
   const [visibleStates, setVisibleStates] = useState<Record<string, boolean>>({
     "man-age": true,
@@ -101,20 +103,37 @@ export default function ResultSection({
                     <div className="flex items-center gap-2">
                       <span>{row.value}</span>
                       {row.id === "korean-age" && (
-                        <label className="flex cursor-pointer items-center gap-1 hover:[&>span]:text-stone-900">
+                        <label
+                          className={cn(
+                            "flex items-center gap-1",
+                            isQuickDisabled
+                              ? "cursor-not-allowed"
+                              : "cursor-pointer hover:[&>span]:text-stone-900",
+                          )}
+                        >
                           <input
                             type="checkbox"
                             checked={applyQuick}
                             onChange={(e) =>
                               onApplyQuickChange(e.target.checked)
                             }
-                            className="h-4 w-4 cursor-pointer"
+                            disabled={isQuickDisabled}
+                            className={cn(
+                              "h-4 w-4",
+                              isQuickDisabled
+                                ? "cursor-not-allowed"
+                                : "cursor-pointer",
+                            )}
                             aria-label="빠른년생"
                           />
                           <span
                             className={cn(
-                              "text-sm whitespace-nowrap text-stone-400",
-                              applyQuick ? "text-stone-900" : "",
+                              "text-sm whitespace-nowrap",
+                              isQuickDisabled
+                                ? "text-stone-300"
+                                : applyQuick
+                                  ? "text-stone-900"
+                                  : "text-stone-400",
                             )}
                           >
                             빠른년생

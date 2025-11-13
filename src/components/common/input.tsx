@@ -32,7 +32,7 @@ export default function Input({
   return (
     <input
       className={cn(
-        "min-w-0 rounded-sm border border-stone-300 p-2",
+        "min-w-0 rounded-sm border border-stone-300 bg-white p-2",
         className,
       )}
       style={finalStyle}

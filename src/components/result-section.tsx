@@ -1,7 +1,5 @@
-import { NavArrowDown, Xmark } from "iconoir-react";
-import { useState } from "react";
+import { Xmark } from "iconoir-react";
 
-import Chip from "@/components/common/chip";
 import type { DateValue } from "@/types/date";
 import { cn } from "@/utils/classname";
 
@@ -11,6 +9,8 @@ interface ResultSectionProps {
   applyQuick: boolean;
   onApplyQuickChange: (value: boolean) => void;
   isQuickDisabled?: boolean;
+  visibleStates: Record<string, boolean>;
+  onHide: (id: string) => void;
 }
 
 interface AgeRow {
@@ -26,13 +26,9 @@ export default function ResultSection({
   applyQuick,
   onApplyQuickChange,
   isQuickDisabled = false,
+  visibleStates,
+  onHide,
 }: ResultSectionProps) {
-  const [visibleStates, setVisibleStates] = useState<Record<string, boolean>>({
-    "man-age": true,
-    "korean-age": true,
-  });
-  const [isHiddenItemsExpanded, setIsHiddenItemsExpanded] = useState(false);
-
   const formatManAge = (result: DateValue): string => {
     const parts: string[] = [];
     if (result.month > 0 || result.day > 0) {
@@ -62,139 +58,67 @@ export default function ResultSection({
     },
   ];
 
-  const handleHide = (id: string) => {
-    setVisibleStates((prev) => ({
-      ...prev,
-      [id]: false,
-    }));
-  };
-
-  const handleShow = (id: string) => {
-    setVisibleStates((prev) => ({
-      ...prev,
-      [id]: true,
-    }));
-  };
-
   const visibleRows = rows.filter(
     (row) => row.isVisible && visibleStates[row.id] !== false,
   );
 
-  const hiddenRows = rows.filter(
-    (row) => row.isVisible && visibleStates[row.id] === false,
-  );
-
   return (
-    <section className="flex flex-col gap-2">
-      <section className="rounded-sm bg-stone-100 p-4">
-        <h1 className="text-xl font-semibold">몇 살이지?</h1>
-        {visibleRows.length > 0 ? (
-          <table className="mt-4 w-full max-w-full">
-            <tbody>
-              {visibleRows.map((row) => (
-                <tr key={row.id} className="border-b border-stone-300">
-                  <td
-                    className="border-r border-stone-300 py-2 pr-4 pl-4 font-medium whitespace-nowrap"
-                    style={{ width: "1%" }}
-                  >
-                    {row.label}
-                  </td>
-                  <td className="w-auto px-4 py-2 wrap-break-word">
-                    <div className="flex items-center gap-2">
-                      <span>{row.value}</span>
-                      {row.id === "korean-age" && (
-                        <label
+    <section className="rounded-sm bg-stone-100 p-4">
+      <h1 className="text-xl font-semibold">몇 살이지?</h1>
+      {visibleRows.length > 0 ? (
+        <table className="mt-4 w-full max-w-full">
+          <tbody>
+            {visibleRows.map((row) => (
+              <tr key={row.id} className="border-b border-stone-300">
+                <td
+                  className="border-r border-stone-300 py-2 pr-4 pl-4 font-medium whitespace-nowrap"
+                  style={{ width: "1%" }}
+                >
+                  {row.label}
+                </td>
+                <td className="w-auto px-4 py-2 wrap-break-word">
+                  <div className="flex items-center gap-2">
+                    <span>{row.value}</span>
+                    {row.id === "korean-age" && !isQuickDisabled && (
+                      <label className="flex cursor-pointer items-center gap-1 hover:[&>span]:text-stone-900">
+                        <input
+                          type="checkbox"
+                          checked={applyQuick}
+                          onChange={(e) => onApplyQuickChange(e.target.checked)}
+                          className="h-4 w-4 cursor-pointer"
+                          aria-label="빠른년생"
+                        />
+                        <span
                           className={cn(
-                            "flex items-center gap-1",
-                            isQuickDisabled
-                              ? "cursor-not-allowed"
-                              : "cursor-pointer hover:[&>span]:text-stone-900",
+                            "text-sm whitespace-nowrap",
+                            applyQuick ? "text-stone-900" : "text-stone-400",
                           )}
                         >
-                          <input
-                            type="checkbox"
-                            checked={applyQuick}
-                            onChange={(e) =>
-                              onApplyQuickChange(e.target.checked)
-                            }
-                            disabled={isQuickDisabled}
-                            className={cn(
-                              "h-4 w-4",
-                              isQuickDisabled
-                                ? "cursor-not-allowed"
-                                : "cursor-pointer",
-                            )}
-                            aria-label="빠른년생"
-                          />
-                          <span
-                            className={cn(
-                              "text-sm whitespace-nowrap",
-                              isQuickDisabled
-                                ? "text-stone-300"
-                                : applyQuick
-                                  ? "text-stone-900"
-                                  : "text-stone-400",
-                            )}
-                          >
-                            빠른년생
-                          </span>
-                        </label>
-                      )}
-                    </div>
-                  </td>
-                  <td
-                    className="px-1 text-center whitespace-nowrap"
-                    style={{ width: "1%" }}
+                          빠른년생
+                        </span>
+                      </label>
+                    )}
+                  </div>
+                </td>
+                <td
+                  className="px-1 text-center whitespace-nowrap"
+                  style={{ width: "1%" }}
+                >
+                  <button
+                    onClick={() => onHide(row.id)}
+                    className="text-red-700 hover:text-red-800"
+                    aria-label={`${row.label} 숨기기`}
                   >
-                    <button
-                      onClick={() => handleHide(row.id)}
-                      className="text-red-700 hover:text-red-800"
-                      aria-label={`${row.label} 숨기기`}
-                    >
-                      <Xmark className="size-6" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p className="mt-4">날짜를 입력하면 나이가 표시됩니다.</p>
-        )}
-      </section>
-      <section className="rounded-sm p-4">
-        <button
-          onClick={() => setIsHiddenItemsExpanded(!isHiddenItemsExpanded)}
-          className="flex w-full items-center justify-between hover:opacity-80"
-          aria-expanded={isHiddenItemsExpanded}
-          aria-label={
-            isHiddenItemsExpanded ? "숨겨진 항목 접기" : "숨겨진 항목 펼치기"
-          }
-        >
-          <h2 className="text-lg font-semibold">
-            숨겨진 항목 {hiddenRows.length}개
-          </h2>
-          <NavArrowDown
-            className={`size-5 transition-transform ${
-              isHiddenItemsExpanded ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-        {isHiddenItemsExpanded && hiddenRows.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {hiddenRows.map((row) => (
-              <Chip
-                key={row.id}
-                variant="primary"
-                className="cursor-pointer hover:opacity-80"
-                onClick={() => handleShow(row.id)}
-              >
-                {row.label}
-              </Chip>
+                    <Xmark className="size-6" />
+                  </button>
+                </td>
+              </tr>
             ))}
-          </div>
-        )}
-      </section>
+          </tbody>
+        </table>
+      ) : (
+        <p className="mt-4">날짜를 입력하면 나이가 표시됩니다.</p>
+      )}
     </section>
   );
 }

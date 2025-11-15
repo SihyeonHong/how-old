@@ -17,7 +17,7 @@ export default function BirthYearTab() {
   return (
     <div className="space-y-4">
       {/* 결과 섹션 */}
-      <BirthYearResult birthYear={birthYear} />
+      <BirthYearResult birthYear={birthYear} referenceDate={referenceDate} />
 
       {/* 나이와 기준일 */}
       <div className="space-y-4 rounded-sm bg-stone-100 p-4">

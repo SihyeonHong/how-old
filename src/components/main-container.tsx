@@ -9,7 +9,7 @@ export default function MainContainer() {
   const [activeTab, setActiveTab] = useState<TabId>("age");
 
   return (
-    <main className="my-5 space-y-4">
+    <main className="my-5 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-center">
       <Tabs activeTab={activeTab} onTabChange={setActiveTab}>
         {activeTab === "age" ? <AgeTab /> : <BirthYearTab />}
       </Tabs>

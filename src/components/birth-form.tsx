@@ -28,8 +28,8 @@ export default function BirthForm({ birthDate, setBirthDate }: BirthFormProps) {
 
   return (
     <form className="space-y-2">
-      <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center">
-        <h1 className="text-xl font-semibold">생년월일</h1>
+      <div className="flex w-full flex-wrap items-center gap-2">
+        <h1 className="text-xl font-semibold whitespace-nowrap">생년월일</h1>
         <div className="flex items-center gap-2">
           <label htmlFor="birth-year" className="flex items-center gap-1">
             <Input

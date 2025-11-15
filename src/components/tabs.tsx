@@ -22,7 +22,7 @@ const tabs: Tab[] = [
 
 export default function Tabs({ activeTab, onTabChange, children }: TabsProps) {
   return (
-    <div className="mx-auto w-full max-w-lg">
+    <div className="mx-auto w-full max-w-lg lg:mx-0">
       {/* 탭 버튼 영역 */}
       <div className="flex">
         {tabs.map((tab) => (

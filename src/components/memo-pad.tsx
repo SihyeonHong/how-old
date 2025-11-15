@@ -37,7 +37,7 @@ export default function MemoPad() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-lg rounded-sm bg-white p-8 shadow-md">
+    <div className="mx-auto w-full max-w-lg rounded-sm bg-white p-8 shadow-md lg:mx-0 lg:max-w-md">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-stone-900">메모장</h2>
         <button

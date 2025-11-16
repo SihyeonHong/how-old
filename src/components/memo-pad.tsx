@@ -1,8 +1,13 @@
-import { Copy } from "iconoir-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
-export default function MemoPad() {
-  const [memo, setMemo] = useState("");
+import CopyButton from "@/components/common/copy-button";
+
+interface MemoPadProps {
+  memo: string;
+  setMemo: (memo: string) => void;
+}
+
+export default function MemoPad({ memo, setMemo }: MemoPadProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -14,40 +19,19 @@ export default function MemoPad() {
     }
   };
 
-  const handleCopy = async () => {
-    if (memo.trim() === "") return;
-
-    try {
-      await navigator.clipboard.writeText(memo);
-      alert("복사되었습니다.");
-    } catch {
-      // 클립보드 API 실패 시 fallback
-      if (textareaRef.current) {
-        textareaRef.current.select();
-        const success = document.execCommand("copy");
-        if (success) {
-          alert("복사되었습니다.");
-        } else {
-          alert("복사에 실패했습니다.");
-        }
-      } else {
-        alert("복사에 실패했습니다.");
-      }
+  // memo가 변경될 때마다 높이 조절
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  };
+  }, [memo]);
 
   return (
     <div className="rounded-sm bg-white p-8 shadow-md">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-stone-900">메모장</h2>
-        <button
-          onClick={handleCopy}
-          disabled={memo.trim() === ""}
-          className="flex items-center gap-2 rounded-sm border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-700 transition-colors hover:border-stone-400 hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-stone-300 disabled:hover:bg-white"
-        >
-          <Copy className="h-4 w-4" />
-          <span>복사</span>
-        </button>
+        <CopyButton text={memo} />
       </div>
       <textarea
         ref={textareaRef}

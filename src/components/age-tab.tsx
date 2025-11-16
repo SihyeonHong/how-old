@@ -4,7 +4,11 @@ import ReferenceDateForm from "@/components/reference-date-form";
 import ResultSection from "@/components/result-section";
 import { useCalculator } from "@/hooks/use-calculator";
 
-export default function AgeTab() {
+interface AgeTabProps {
+  onAddToMemo: (text: string) => void;
+}
+
+export default function AgeTab({ onAddToMemo }: AgeTabProps) {
   const {
     referenceDate,
     birthDate,
@@ -32,6 +36,9 @@ export default function AgeTab() {
         isQuickDisabled={isQuickDisabled}
         visibleStates={visibleStates}
         onHide={handleHide}
+        birthDate={birthDate}
+        referenceDate={referenceDate}
+        onAddToMemo={onAddToMemo}
       />
 
       {/* 생년월일과 기준일 */}

@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import AgeTab from "@/components/age-tab";
 import BirthYearTab from "@/components/birth-year-tab";
+import Footer from "@/components/common/footer";
 import MemoPad from "@/components/memo-pad";
 import Tabs, { type TabId } from "@/components/tabs";
 
@@ -9,11 +10,14 @@ export default function MainContainer() {
   const [activeTab, setActiveTab] = useState<TabId>("age");
 
   return (
-    <main className="my-5 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-center">
+    <main className="my-5 flex min-h-screen flex-col gap-4 lg:flex-row lg:items-start lg:justify-center">
       <Tabs activeTab={activeTab} onTabChange={setActiveTab}>
         {activeTab === "age" ? <AgeTab /> : <BirthYearTab />}
       </Tabs>
-      <MemoPad />
+      <div className="mx-auto flex w-full max-w-lg flex-col gap-4 lg:mx-0 lg:max-w-md">
+        <MemoPad />
+        <Footer />
+      </div>
     </main>
   );
 }

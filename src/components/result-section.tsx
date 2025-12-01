@@ -1,4 +1,4 @@
-import { Plus, Text, Xmark } from "iconoir-react";
+import { NavArrowDown, Plus, Xmark } from "iconoir-react";
 import { useMemo, useState } from "react";
 
 import CopyButton from "@/components/common/copy-button";
@@ -171,14 +171,6 @@ export default function ResultSection({
             </tbody>
           </table>
           <div className="mt-4 flex justify-end gap-2">
-            <button
-              onClick={() => setShowTextEditor(!showTextEditor)}
-              className="flex items-center gap-1.5 rounded-sm border border-stone-300 bg-white px-2.5 py-1 text-xs text-stone-700 transition-colors hover:border-stone-400 hover:bg-stone-50"
-              aria-label="텍스트로 보기"
-            >
-              <Text className="h-3.5 w-3.5" />
-              <span>텍스트로 보기</span>
-            </button>
             {showTextEditor && formattedText && (
               <>
                 <CopyButton text={formattedText} size="sm" />
@@ -192,10 +184,22 @@ export default function ResultSection({
                 </button>
               </>
             )}
+            <button
+              onClick={() => setShowTextEditor(!showTextEditor)}
+              className="flex items-center gap-1 px-2 py-1 text-xs text-stone-700 transition-colors hover:font-semibold hover:text-stone-800"
+              aria-label={showTextEditor ? "접기" : "텍스트로 보기"}
+            >
+              <span>{showTextEditor ? "접기" : "텍스트로 보기"}</span>
+              <NavArrowDown
+                className={`size-3.5 transition-transform ${
+                  showTextEditor ? "rotate-180" : ""
+                }`}
+              />
+            </button>
           </div>
           {showTextEditor && (
             <div className="mt-3">
-              <pre className="w-full rounded-sm border border-stone-300 bg-white p-3 text-sm text-stone-900 whitespace-pre-wrap font-sans">
+              <pre className="w-full rounded-sm border border-stone-300 bg-white p-3 font-sans text-sm whitespace-pre-wrap text-stone-900">
                 {formattedText}
               </pre>
             </div>
